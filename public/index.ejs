@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="https://www.mongodb.com/docs/assets/favicon.ico"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    /> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <title>Movies</title>
+    <style>
+      .Btn {
+        position: fixed;
+        right: 50px;
+        bottom: 25px;
+      }.collection-item:hover .hide{
+        display: block !important;
+        cursor: pointer;
+      }.file{
+        width: 100px;
+        height: 125px;
+      }.img,.file{        
+        font-size: 10rem;
+        position: relative !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        cursor: pointer !important;
+      }.file input {
+        z-index: 9999;
+        width: 100px;
+        height: 100px;
+        opacity: 0;
+        position: relative;
+        cursor: pointer;
+      }.img {
+        position: absolute !important;
+        top: 0;
+      }#img{
+        position: absolute;
+        top: 10px;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="center">Favorite Movies</h1>
+    <ul class="collection container">
+      <% Data.forEach(e => {%>
+      <li class="collection-item avatar">
+        <img src="img/<%= e.Director%>.jpg" alt="" class="circle" />
+        <span class="title"><%= e.Title %></span>
+        <% for (let i = 0; i < e.Rating; i++){%>
+        <a
+          href="#!"
+          class="secondary-content yellow-text darken-2-text"
+          style="position: relative"
+        >
+          <i class="material-icons">grade</i>
+        </a>
+        <%}%>
+          <i class="material-icons hide red-text accent-3-text modal-trigger" data-target="delete" style="
+              position: absolute;
+              right: 5px;
+              bottom: 5px;
+              font-size: 2.2rem;
+            ">delete</i>
+        <p>
+          <%= e.Director %> <br />
+          <%= e.Year %>
+        </p>
+      </li>
+      <%})%>
+    </ul>
+    <a
+      class="btn-floating btn-large waves-effect waves-light modal-trigger blue Btn"
+      href="#modal"
+      ><i class="material-icons">add</i></a
+    >
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h4>New Movie</h4>
+        <div class="row">
+          <form class="col s12">
+            <div class="row">
+               <div class="file">
+                  <input type="file" accept="image/png, image/jpeg">
+                  <i class="material-icons img">account_circle</i>
+                  <img src="" id="img">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+              </div>
+              <div class="input-field col s4">
+                <input class="inp" id="title" type="text" />
+                <label for="title">Title</label>
+              </div>
+              <div class="input-field col s4">
+                <input class="inp" id="author" type="text" />
+                <label for="author">Director</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
+                <select class="inp">
+                  <option disabled selected>Duration</option>
+                  <option>30m</option>
+                  <option>1h</option>
+                  <option>1h 30m</option>
+                  <option>2h</option>
+                  <option>2h 30m</option>
+                  <option>+2h</option>
+                </select>
+                <label>Duration</label>
+              </div>
+              <div class="input-field col s4">
+                <select class="inp">
+                  <option disabled selected>Year</option>
+                  <% for (let i = 1990; i < 2024; i++) {%>
+                  <option><%= i %></option>
+                  <% } %>
+                </select>
+                <label>Movie Released Year</label>
+              </div>
+              <div class="input-field col s4">
+                <select class="inp">
+                  <option disabled selected>0</option>
+                  <% for (let i = 0; i < 6; i++) {%>
+                  <option><%= i %></option>
+                  <% } %>
+                </select>
+                <label>Movie Rating</label>
+              </div>
+            </div><div class="modal-footer">
+        <button
+          href="#!"
+          id="save"
+          type="submit"
+          class="modal-close waves-effect waves-green btn-flat"
+          >Save</button
+        >
+      </div>
+          </form>
+        </div>
+      </div>
+  <!-- Modal Structure -->
+ 
+    </div> 
+    <div id="delete" class="modal">
+      <div class="modal-content">
+        <h4 class="center">Confirm Deletion</h4><br>
+        <h5 class="center">Are sure want to Delete this item?</h5>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red red white-text btn-flat" id="del">Confirm</a>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+      (function invoke() {
+          const modal = document.querySelectorAll(".modal"),
+            select = document.querySelectorAll("select"),
+            collection = document.querySelector(".collection"),
+            del = document.querySelectorAll('[data-target="delete"]'),
+            file = document.querySelector('[type="file"]'),
+            Cdel = document.querySelector("#del"),
+            form = document.querySelector("form"),
+            img = document.querySelector("#img")       
+            inp = document.querySelectorAll(".inp");
+            let deleted = "";
+
+            document.addEventListener("DOMContentLoaded", function () {
+              const instances = M.Modal.init(modal, {});
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+              const instances = M.FormSelect.init(select, {});
+            });
+
+           file.onchange = (e)=> {
+            let imgF = e.target.files[0]
+            img.src = URL.createObjectURL(imgF);
+            img.style.width = "125px"
+            img.style.height = "125px"
+           }
+
+            form.onsubmit= (e) => {
+              e.preventDefault()
+              let values=[],obj={};
+              inp.forEach(e=>
+                {
+                  console.log(e.nextElementSibling)
+                  values.push(e.value.replaceAll(/\W+/g,""))
+                }
+                
+              )
+              //for (var i = 0; i < values.length; i++) {
+                //obj.key = values[i]
+              //}
+              console.log(values)
+              let star;
+              let loop =()=> {
+                for (var i = 0; i < Number(values[4]); i++) {
+                    star+=`<a
+                          href="#!"
+                          class="secondary-content yellow-text darken-2-text"
+                          style="position: relative"
+                        >
+                          <i class="material-icons">grade</i>
+                        </a>`
+                    star = star.replace('undefined',"")
+                }
+                return star
+            }
+            let stars = loop()
+            collection.children[0].tagName !== "LI" && (collection.innerHTML = ``)
+              collection.insertAdjacentHTML("beforeend",
+                  ` <li class="collection-item avatar">
+              <img src="${img.src.includes('blob') ? img.src : "/img/default.png"}" alt="" class="circle" />
+              <span class="title">${values[0].trim() ? values[0] : "No name"}</span>
+              ${stars ? stars : ""}
+             <i class="material-icons hide red-text accent-3-text modal-trigger" data-target="delete" style="
+                    position: absolute;
+                    right: 5px;
+                    bottom: 5px;
+                    font-size: 2.2rem;
+                  ">delete</i>
+              <p>
+                ${values[1].trim() ? values[1] : "No name"} <br />
+                ${values[3].trim() ? values[3] : "No name"}
+              </p>
+            </li>`
+                )
+              invoke()
+            };
+
+            del.forEach(e=>
+              e.onclick=()=> {
+                deleted = e.parentNode;
+            })
+
+            Cdel.onclick = ()=> {
+              deleted.remove();
+              !collection.children.length && (collection.innerHTML = `<h4 class="center">Empty List</h4>`)
+              invoke()
+            } 
+        })()
+    </script>
+  </body>
+</html>

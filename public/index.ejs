@@ -1,236 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="shortcut icon"
-      href="https://www.mongodb.com/docs/assets/favicon.ico"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-    /> 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <title>Movies</title>
-    <style>
-      .Btn {
-        position: fixed;
-        right: 50px;
-        bottom: 25px;
-      }.collection-item:hover .hide{
-        display: block !important;
-        cursor: pointer;
-      }.file{
-        width: 100px;
-        height: 125px;
-      }.img,.file{        
-        font-size: 10rem;
-        position: relative !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        cursor: pointer !important;
-      }.file input {
-        z-index: 9999;
-        width: 100px;
-        height: 100px;
-        opacity: 0;
-        position: relative;
-        cursor: pointer;
-      }.img {
-        position: absolute !important;
-        top: 0;
-      }#img{
-        position: absolute;
-        top: 10px;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        border-radius: 50%;
-      }
-    </style>
-  </head>
-  <body>
-    <h1 class="center">Favorite Movies</h1>
-    <ul class="collection container">
-      <% Data.forEach(e => {%>
-      <li class="collection-item avatar">
-        <img src="img/<%= e.Director%>.jpg" alt="" class="circle" />
-        <span class="title"><%= e.Title %></span>
-        <% for (let i = 0; i < e.Rating; i++){%>
-        <a
-          href="#!"
-          class="secondary-content yellow-text darken-2-text"
-          style="position: relative"
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="https://www.mongodb.com/docs/assets/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <title>Movies</title>
+  <style>
+    .Btn {
+      position: fixed;
+      right: 50px;
+      bottom: 25px;
+    }
+
+    .collection-item:hover .hide {
+      display: block !important;
+      cursor: pointer;
+    }
+
+    .file {
+      width: 100px;
+      height: 125px;
+    }
+
+    .img,
+    .file {
+      font-size: 10rem;
+      position: relative !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      cursor: pointer !important;
+    }
+
+    .file input {
+      z-index: 9999;
+      width: 100px;
+      height: 100px;
+      opacity: 0;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .img {
+      position: absolute !important;
+      top: 0;
+    }
+
+    #img {
+      position: absolute;
+      top: 10px;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="center">Favorite Movies</h1>
+  <ul class="collection container">
+    <h4 class="center hide" id="empty">Empty List</h4>
+    <% Data.forEach(e=> {%>
+      <li class="collection-item avatar" key=<%=e._id %>
         >
-          <i class="material-icons">grade</i>
-        </a>
-        <%}%>
-          <i class="material-icons hide red-text accent-3-text modal-trigger" data-target="delete" style="
-              position: absolute;
-              right: 5px;
-              bottom: 5px;
-              font-size: 2.2rem;
-            ">delete</i>
-        <p>
-          <%= e.Director %> <br />
-          <%= e.Year %>
-        </p>
+        <img src="<%= e.img %>" alt="profile picture" class="circle" />
+        <span class="title">
+          <%= e.Title %>
+        </span>
+        <% for (let i=0; i < e.Rating; i++){%>
+          <a href="#!" class="secondary-content yellow-text darken-2-text" style="position: relative">
+            <i class="material-icons">grade</i>
+          </a>
+          <%}%>
+            <i class="material-icons hide red-text accent-3-text modal-trigger" data-target="delete"
+              style="position: absolute; right: 5px; bottom: 5px; font-size: 2.2rem">delete</i>
+            <p>
+              <%= e.Director %> <br />
+                <%= e.Year %>
+            </p>
       </li>
       <%})%>
-    </ul>
-    <a
-      class="btn-floating btn-large waves-effect waves-light modal-trigger blue Btn"
-      href="#modal"
-      ><i class="material-icons">add</i></a
-    >
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <h4>New Movie</h4>
-        <div class="row">
-          <form class="col s12">
-            <div class="row">
-               <div class="file">
-                  <input type="file" accept="image/png, image/jpeg">
-                  <i class="material-icons img">account_circle</i>
-                  <img src="" id="img">
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-              </div>
-              <div class="input-field col s4">
-                <input class="inp" id="title" type="text" />
-                <label for="title">Title</label>
-              </div>
-              <div class="input-field col s4">
-                <input class="inp" id="author" type="text" />
-                <label for="author">Director</label>
-              </div>
+  </ul>
+  <a class="btn-floating btn-large waves-effect waves-light modal-trigger blue Btn" href="#modal"><i
+      class="material-icons">add</i></a>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h4 class="center">New Movie</h4>
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="file">
+              <input type="file" accept="image/png, image/jpeg" />
+              <i class="material-icons img">account_circle</i>
+              <img src="" id="img" name="img" />
             </div>
-            <div class="row">
-              <div class="input-field col s4">
-                <select class="inp">
-                  <option disabled selected>Duration</option>
-                  <option>30m</option>
-                  <option>1h</option>
-                  <option>1h 30m</option>
-                  <option>2h</option>
-                  <option>2h 30m</option>
-                  <option>+2h</option>
-                </select>
-                <label>Duration</label>
-              </div>
-              <div class="input-field col s4">
-                <select class="inp">
-                  <option disabled selected>Year</option>
-                  <% for (let i = 1990; i < 2024; i++) {%>
-                  <option><%= i %></option>
+            <div class="content">
+              <p class="hide red-text center" id="limit">Maximum upload file size: 5KB</p>
+            </div>
+            <div class="input-field col s4">
+              <input class="inp" id="title" type="text" />
+              <label for="title">Title</label>
+            </div>
+            <div class="input-field col s4">
+              <input class="inp" id="author" type="text" />
+              <label for="author">Director</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s4">
+              <select class="inp">
+                <option disabled selected>1h</option>
+                <option>30m</option>
+                <option>1h</option>
+                <option>1h 30m</option>
+                <option>2h</option>
+                <option>2h 30m</option>
+                <option>+2h</option>
+              </select>
+              <label>Duration</label>
+            </div>
+            <div class="input-field col s4">
+              <select class="inp">
+                <option disabled selected>1990</option>
+                <% for (let i=1990; i < 2024; i++) {%>
+                  <option>
+                    <%= i %>
+                  </option>
                   <% } %>
-                </select>
-                <label>Movie Released Year</label>
-              </div>
-              <div class="input-field col s4">
-                <select class="inp">
-                  <option disabled selected>0</option>
-                  <% for (let i = 0; i < 6; i++) {%>
-                  <option><%= i %></option>
+              </select>
+              <label>Movie Released Year</label>
+            </div>
+            <div class="input-field col s4">
+              <select class="inp">
+                <option disabled selected>0</option>
+                <% for (let i=0; i < 6; i++) {%>
+                  <option>
+                    <%= i %>
+                  </option>
                   <% } %>
-                </select>
-                <label>Movie Rating</label>
-              </div>
-            </div><div class="modal-footer">
-        <button
-          href="#!"
-          id="save"
-          type="submit"
-          class="modal-close waves-effect waves-green btn-flat"
-          >Save</button
-        >
-      </div>
-          </form>
-        </div>
-      </div>
-  <!-- Modal Structure -->
- 
-    </div> 
-    <div id="delete" class="modal">
-      <div class="modal-content">
-        <h4 class="center">Confirm Deletion</h4><br>
-        <h5 class="center">Are sure want to Delete this item?</h5>
-      </div>
-      <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-red red white-text btn-flat" id="del">Confirm</a>
+              </select>
+              <label>Movie Rating</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button href="#!" id="save" type="submit" class="modal-close waves-effect waves-green btn-flat">
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Modal Structure -->
+  </div>
+  <div id="delete" class="modal">
+    <div class="modal-content">
+      <h4 class="center">Confirm Deletion</h4>
+      <br />
+      <h5 class="center">Are sure want to Delete this item?</h5>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-red red white-text btn-flat" id="del">Confirm</a>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-    <script>
-      (function invoke() {
-          const modal = document.querySelectorAll(".modal"),
-            select = document.querySelectorAll("select"),
-            collection = document.querySelector(".collection"),
-            del = document.querySelectorAll('[data-target="delete"]'),
-            file = document.querySelector('[type="file"]'),
-            Cdel = document.querySelector("#del"),
-            form = document.querySelector("form"),
-            img = document.querySelector("#img")       
-            inp = document.querySelectorAll(".inp");
-            let deleted = "";
+  <script>
+    (function invoke() {
+      const modal = document.querySelectorAll(".modal"),
+        select = document.querySelectorAll("select"),
+        collection = document.querySelector(".collection"),
+        del = document.querySelectorAll('[data-target="delete"]'),
+        file = document.querySelector('[type="file"]'),
+        Cdel = document.querySelector("#del"),
+        form = document.querySelector("form"),
+        img = document.querySelector("#img"),
+        inp = document.querySelectorAll(".inp");
+      let deleted = "",
+        imgData = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKoAAACqBAMAAADPWMmxAAAAFVBMVEWZmZn////39/esrKy+vr7m5ubU1NS1LKfwAAADTUlEQVRo3u3aTXPaQAwG4DfYcC4f5owT4OykIWcDTc+4EM4mA/z/n9BL0wlG2pVWeDLT7t4yk3nGyFppP4y+ZGTndQHg+4+T6N/7kJhr/B3Ja34TdXDExUjeb6BmJZpjYVbHBa7HS25TSRTo5RY1o1HgxaAOSnBjEa7W4MchVJ06UCR5mMoG9c8bC1NruMcyRB15UKR5gFr6VDzpVe+jul4Ywh/V8bAIf1Qg0aq1RGXTgFHHIhSpTp3IVFQadVAI1Y5GHQlR7n3R6kaqMqULpgBwIYApAFwIYMkANgsQOls/xqNUzRQoXbxhCysTWJjyisstGMNKB5ZQByoUXZk61qmpTB3qVMjUiVKtRGqtVJcitVCqdyJViVJJANt8ZeYsrIlFphbMiUVVghuoyAXqRK1WAnWjVg9fptZqdfllaqlWH6P636vLf2wWtFMH2qmE31pR9b1A0mFGrfStdnrsQKt2W1kRdURqaS4DlLoxTwJK1SZsLlJH5sSiVOWisCfcGemS4E6o1sY6SKtD68si1bFxvtLqoLDNLOZ8oDaGlVYVgaVPIEk1s2Urd/JUWkoLqw5NecWpmS0A3OljbckAVh1ZMoBVhROhozwrfrAcv7JqFthdPWfwk7CO5VEzw6M67jYegqPqUr1psAi6M5qG3pe4b83q0Isop+q8NlsE3xuOgy63vDenOzaoleWWd8ugB9uN9DYE9d+e79Q/n17B7y//nheeu/M3wXnWvGgWjcsPCJJTP2/sI66/KADxg6+qRnb8eN7nU07Vi1e3uuXKxmx/Pp/fcq7LL1zq1N04HB1uxauZ5GacWZBUrFr6b4XZZpxy6tS3JHGunVaMWkiaB1uDP4cNTEupROhFv3gi1VL6zQFTJVJKbRTTlQAdc90B3PbVX0KuPjHpXqtXLbWn+/0X7wv8KnAhf//NEMCxf3/XBPUiBHBsBZwln2rAaVPNlD2P7upVQx3puh6zVFg2VGZhyXw4Ni/ca2/4Vj/Ud24735YG3pOGtPm489J7WgLBBdzzZ3e2FmzqIFpZJz9Pv+7797P9sRAtlBF4OOjeKSDwINO9qEXooatzC47QA2LnMVSr6uRGaieqUY1qVKMa1ahGNapRjWpUoxrVNtXfahTVPmuxwbIAAAAASUVORK5CYII='
 
-            document.addEventListener("DOMContentLoaded", function () {
-              const instances = M.Modal.init(modal, {});
-            });
+      document.addEventListener("DOMContentLoaded", function () {
+        const instances = M.Modal.init(modal, {});
+      });
 
-            document.addEventListener("DOMContentLoaded", function () {
-              const instances = M.FormSelect.init(select, {});
-            });
-
-           file.onchange = (e)=> {
-            let imgF = e.target.files[0]
+      document.addEventListener("DOMContentLoaded", function () {
+        const instances = M.FormSelect.init(select, {});
+      });
+      !collection.querySelector("li") ? document.querySelector("#empty").classList.remove("hide") : document.querySelector("#empty").classList.add("hide")
+      console.log(collection.querySelector("li"))
+      file.onchange = (e) => {
+        let imgF = e.target.files[0];
+        console.log(imgF.size);
+        imgF.size > 5000 ?
+          (() => {
+            document.querySelector("#limit").classList.remove("hide");
+            img.src = "";
+            img.style.width = "0px";
+            img.style.height = "0px"
+            return false
+          })() : (() => {
+            document.querySelector("#limit").classList.add("hide");
             img.src = URL.createObjectURL(imgF);
-            img.style.width = "125px"
-            img.style.height = "125px"
-           }
+            img.style.width = "130px";
+            img.style.height = "130px";
+          })()
+      };
 
-            form.onsubmit= (e) => {
-              e.preventDefault()
-              let values=[],obj={};
-              inp.forEach(e=>
-                {
-                  console.log(e.nextElementSibling)
-                  values.push(e.value.replaceAll(/\W+/g,""))
-                }
-                
-              )
-              //for (var i = 0; i < values.length; i++) {
-                //obj.key = values[i]
-              //}
-              console.log(values)
-              let star;
-              let loop =()=> {
-                for (var i = 0; i < Number(values[4]); i++) {
-                    star+=`<a
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        let values = [];
+        inp.forEach((e) => {
+          values.push(e.value.replaceAll(/\W+/g, ""));
+        });
+
+        img.src.includes('blob') ? (() => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          canvas.getContext('2d').drawImage(img, 0, 0);
+          const dataURL = canvas.toDataURL();
+          imgData = dataURL
+          values.push(imgData)
+        })() : values.push(imgData)
+
+        console.log(imgData);
+
+        const response = await fetch("/addmovies", {
+          method: "POST",
+          body: JSON.stringify(values),
+          headers: { "Content-Type": "application/json" },
+        });
+        response && console.log(response.status);
+
+        let star;
+        let loop = () => {
+          for (var i = 0; i < Number(values[4]); i++) {
+            star += `<a
                           href="#!"
                           class="secondary-content yellow-text darken-2-text"
                           style="position: relative"
                         >
                           <i class="material-icons">grade</i>
-                        </a>`
-                    star = star.replace('undefined',"")
-                }
-                return star
-            }
-            let stars = loop()
-            collection.children[0].tagName !== "LI" && (collection.innerHTML = ``)
-              collection.insertAdjacentHTML("beforeend",
-                  ` <li class="collection-item avatar">
-              <img src="${img.src.includes('blob') ? img.src : "/img/default.png"}" alt="" class="circle" />
-              <span class="title">${values[0].trim() ? values[0] : "No name"}</span>
+                        </a>`;
+            star = star.replace("undefined", "");
+          }
+          return star;
+        };
+        let stars = loop();
+
+        collection.insertAdjacentHTML(
+          "beforeend",
+          ` <li class="collection-item avatar" key=${response.text()}>
+              <img src="${imgData}" alt="" class="circle" />
+              <span class="title">${values[0].trim() ? values[0] : "No name"
+          }</span>
               ${stars ? stars : ""}
              <i class="material-icons hide red-text accent-3-text modal-trigger" data-target="delete" style="
                     position: absolute;
@@ -239,25 +266,33 @@
                     font-size: 2.2rem;
                   ">delete</i>
               <p>
-                ${values[1].trim() ? values[1] : "No name"} <br />
-                ${values[3].trim() ? values[3] : "No name"}
+                ${values[1].trim() ? values[1] : "No Name"} <br />
+                ${values[3].trim() ? values[3] : "No Name"}
               </p>
             </li>`
-                )
-              invoke()
-            };
+        );
+        invoke();
+      };
 
-            del.forEach(e=>
-              e.onclick=()=> {
-                deleted = e.parentNode;
-            })
+      del.forEach(
+        (e) =>
+        (e.onclick = () => {
+          deleted = e.parentNode;
+        })
+      );
 
-            Cdel.onclick = ()=> {
-              deleted.remove();
-              !collection.children.length && (collection.innerHTML = `<h4 class="center">Empty List</h4>`)
-              invoke()
-            } 
-        })()
-    </script>
-  </body>
+      Cdel.onclick = () => {
+        fetch('/rmmovies', {
+          method: "DELETE",
+          body: JSON.stringify({ id: deleted.attributes.key.value }),
+          headers: { "Content-Type": "application/json" },
+        })
+        deleted.remove();
+          !collection.querySelector("li") && document.querySelector("#empty").classList.remove("hide")
+        invoke();
+      };
+    })();
+  </script>
+</body>
+
 </html>

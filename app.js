@@ -1,9 +1,8 @@
 const express = require("express");
 const mongodb = require("mongodb");
-//var ObjectId = require('bson').ObjectID;
 const { db, getDb } = require("./data/db");
 
-app = express();
+const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -42,7 +41,7 @@ app.post("/addmovies", (req, res) => {
   data.collection("Hobbit").insertOne(movies, (err) => {
     if (err) throw err;
     console.log("1 document inserted");
-    db.close();
+    //db.close();
   });
   res.send(movies._id);
 });
@@ -54,7 +53,7 @@ app.delete("/rmmovies", (req, res) => {
     .deleteOne({ _id: new mongodb.ObjectId(req.body.id) }, (err) => {
       if (err) throw err;
       console.log("1 document Deleted");
-      db.close();
+      //db.close();
     });
   res.send("ok");
 });
